@@ -315,7 +315,7 @@
  *                 EXP1                                        EXP2
  */
 #define EXP1_01_PIN                         PE8
-#define EXP1_02_PIN                         PE7
+//#define EXP1_02_PIN                         PE7  //modified for backlight control
 #define EXP1_03_PIN                         PE9
 #define EXP1_04_PIN                         PE10
 #define EXP1_05_PIN                         PE12
@@ -440,7 +440,7 @@
 #elif HAS_WIRED_LCD
 
   #define BEEPER_PIN                 EXP1_01_PIN
-  #define BTN_ENC                    EXP1_02_PIN
+  #define BTN_ENC                    EXP1_03_PIN
 
   #if ENABLED(CR10_STOCKDISPLAY)
 
@@ -454,13 +454,13 @@
 
   #else
 
-    #define LCD_PINS_RS              EXP1_04_PIN
+    #define LCD_PINS_RS              EXP1_08_PIN
 
-    #define BTN_EN1                  EXP2_03_PIN
-    #define BTN_EN2                  EXP2_05_PIN
+    #define BTN_EN1                  EXP1_05_PIN
+    #define BTN_EN2                  EXP1_07_PIN
 
-    #define LCD_PINS_EN              EXP1_03_PIN
-    #define LCD_PINS_D4              EXP1_05_PIN
+    #define LCD_PINS_EN              EXP1_06_PIN
+    #define LCD_PINS_D4              EXP1_04_PIN
 
     #if ENABLED(FYSETC_MINI_12864)
       #define DOGLCD_CS              EXP1_03_PIN
@@ -483,9 +483,9 @@
     #endif // !FYSETC_MINI_12864
 
     #if IS_ULTIPANEL
-      #define LCD_PINS_D5            EXP1_06_PIN
-      #define LCD_PINS_D6            EXP1_07_PIN
-      #define LCD_PINS_D7            EXP1_08_PIN
+      //#define LCD_PINS_D5            EXP1_06_PIN
+      //#define LCD_PINS_D6            EXP1_07_PIN
+      //#define LCD_PINS_D7            EXP1_08_PIN
 
       #if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
         #define BTN_ENC_EN           LCD_PINS_D7  // Detect the presence of the encoder
@@ -494,7 +494,7 @@
     #endif
 
   #endif
-#endif // HAS_WIRED_LCD
+#endif  // HAS_WIRED_LCD
 
 // Alter timing for graphical display
 #if IS_U8GLIB_ST7920
