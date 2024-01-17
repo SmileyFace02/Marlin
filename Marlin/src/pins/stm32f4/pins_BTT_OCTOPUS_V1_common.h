@@ -315,7 +315,7 @@
  *                 EXP1                                        EXP2
  */
 #define EXP1_01_PIN                         PE8
-//#define EXP1_02_PIN                         PE7  //modified for backlight control
+//#define EXP1_02_PIN                         PE7  //*modified for backlight control
 #define EXP1_03_PIN                         PE9
 #define EXP1_04_PIN                         PE10
 #define EXP1_05_PIN                         PE12
