@@ -135,9 +135,9 @@
  * Options: A4988, A5984, DRV8825, LV8729, TB6560, TB6600, TMC2100,
  *          TMC2130, TMC2130_STANDALONE, TMC2160, TMC2160_STANDALONE,
  *          TMC2208, TMC2208_STANDALONE, TMC2209, TMC2209_STANDALONE,
- *          TMC26X,  TMC26X_STANDALONE,  TMC2660, TMC2660_STANDALONE,
- *          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
- * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
+ *          TMC2660, TMC2660_STANDALONE, TMC5130, TMC5130_STANDALONE,
+ *          TMC5160, TMC5160_STANDALONE
+ * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
 #define X_DRIVER_TYPE  TMC2209 //*
 #define Y_DRIVER_TYPE  TMC2209 //*
@@ -1006,9 +1006,6 @@
     // Radius around the center where the arm cannot reach
     #define MIDDLE_DEAD_ZONE_R   0  // (mm)
 
-    #define THETA_HOMING_OFFSET  0  // Calculated from Calibration Guide and M360 / M114. See https://www.morgan3dp.com/morgan-calibration-guide/
-    #define PSI_HOMING_OFFSET    0  // Calculated from Calibration Guide and M364 / M114. See https://www.morgan3dp.com/morgan-calibration-guide/
-
   #elif ENABLED(MP_SCARA)
 
     #define SCARA_OFFSET_THETA1  12 // degrees
@@ -1027,23 +1024,19 @@
   #define DEFAULT_SEGMENTS_PER_SECOND 200
 
   // Length of inner and outer support arms. Measure arm lengths precisely.
-  #define TPARA_LINKAGE_1 120       // (mm)
-  #define TPARA_LINKAGE_2 120       // (mm)
+  #define TPARA_LINKAGE_1 120     // (mm)
+  #define TPARA_LINKAGE_2 120     // (mm)
 
-  // SCARA tower offset (position of Tower relative to bed zero position)
-  // This needs to be reasonably accurate as it defines the printbed position in the SCARA space.
-  #define TPARA_OFFSET_X    0       // (mm)
-  #define TPARA_OFFSET_Y    0       // (mm)
-  #define TPARA_OFFSET_Z    0       // (mm)
+  // TPARA tower offset (position of Tower relative to bed zero position)
+  // This needs to be reasonably accurate as it defines the printbed position in the TPARA space.
+  #define TPARA_OFFSET_X    0     // (mm)
+  #define TPARA_OFFSET_Y    0     // (mm)
+  #define TPARA_OFFSET_Z    0     // (mm)
 
   #define FEEDRATE_SCALING        // Convert XY feedrate from mm/s to degrees/s on the fly
 
   // Radius around the center where the arm cannot reach
   #define MIDDLE_DEAD_ZONE_R   0  // (mm)
-
-  // Calculated from Calibration Guide and M360 / M114. See https://www.morgan3dp.com/morgan-calibration-guide/
-  #define THETA_HOMING_OFFSET  0
-  #define PSI_HOMING_OFFSET    0
 #endif
 
 // @section polar
@@ -1291,6 +1284,7 @@
   #define DEFAULT_XJERK 10.0
   #define DEFAULT_YJERK 10.0
   #define DEFAULT_ZJERK  0.3
+  #define DEFAULT_EJERK  5.0
   //#define DEFAULT_IJERK  0.3
   //#define DEFAULT_JJERK  0.3
   //#define DEFAULT_KJERK  0.3
@@ -1305,8 +1299,6 @@
     #define MAX_JERK_EDIT_VALUES { 25, 25, 1, 15 } //* ...or, set your own edit limits
   #endif
 #endif
-
-#define DEFAULT_EJERK    5.0  // May be used by Linear Advance
 
 /**
  * Junction Deviation Factor
@@ -1446,6 +1438,17 @@
 #if ENABLED(BD_SENSOR)
   //#define BD_SENSOR_PROBE_NO_STOP // Probe bed without stopping at each probe point
 #endif
+
+/**
+ * BIQU MicroProbe
+ *
+ * A lightweight, solenoid-driven probe.
+ * For information about this sensor https://github.com/bigtreetech/MicroProbe
+ *
+ * Also requires: PROBE_ENABLE_DISABLE
+ */
+//#define BIQU_MICROPROBE_V1  // Triggers HIGH
+//#define BIQU_MICROPROBE_V2  // Triggers LOW
 
 // A probe that is deployed and stowed with a solenoid pin (SOL1_PIN)
 //#define SOLENOID_PROBE
@@ -3027,7 +3030,7 @@
 
 //
 // Factory display for Creality CR-10 / CR-7 / Ender-3
-// https://www.aliexpress.com/item/32833148327.html
+// https://marlinfw.org/docs/hardware/controllers.html#cr10_stockdisplay
 //
 // Connect to EXP1 on RAMPS and compatible boards.
 //
@@ -3404,7 +3407,6 @@
   #define BUTTON_DELAY_MENU     250 // (ms) Button repeat delay for menus
 
   //#define DISABLE_ENCODER         // Disable the click encoder, if any
-  //#define TOUCH_IDLE_SLEEP_MINS 5 // (minutes) Display Sleep after a period of inactivity. Set with M255 S.
 
   #define TOUCH_SCREEN_CALIBRATION
 

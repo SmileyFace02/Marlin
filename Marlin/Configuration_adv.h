@@ -459,7 +459,7 @@
       #define PID_FAN_SCALING_LIN_FACTOR (PID_FAN_SCALING_AT_FULL_SPEED-DEFAULT_Kf)/255.0
 
     #else
-      #define PID_FAN_SCALING_LIN_FACTOR (0)             // Power loss due to cooling = Kf * (fan_speed)
+      #define PID_FAN_SCALING_LIN_FACTOR (0)             // Power-loss due to cooling = Kf * (fan_speed)
       #define DEFAULT_Kf 10                              // A constant value added to the PID-tuner
       #define PID_FAN_SCALING_MIN_SPEED 10               // Minimum fan speed at which to enable PID_FAN_SCALING
     #endif
@@ -1474,6 +1474,7 @@
   #if IS_ULTIPANEL
     #define MANUAL_E_MOVES_RELATIVE // Display extruder move distance rather than "position"
     #define ULTIPANEL_FEEDMULTIPLY  // Encoder sets the feedrate multiplier on the Status Screen
+    //#define ULTIPANEL_FLOWPERCENT // Encoder sets the flow percentage on the Status Screen
   #endif
 #endif
 
@@ -1539,6 +1540,7 @@
    * Axis moves <= 1/2 the axis length and Extruder moves <= EXTRUDE_MAXLENGTH
    * will be shown in the move submenus.
    */
+
   #define MANUAL_MOVE_DISTANCE_MM                    10, 1.0, 0.1  // (mm)
   //#define MANUAL_MOVE_DISTANCE_MM         100, 50, 10, 1.0, 0.1  // (mm)
   //#define MANUAL_MOVE_DISTANCE_MM    500, 100, 50, 10, 1.0, 0.1  // (mm)
@@ -1743,20 +1745,25 @@
    */
   #define POWER_LOSS_RECOVERY //*
   #if ENABLED(POWER_LOSS_RECOVERY)
-    #define PLR_ENABLED_DEFAULT       false // Power Loss Recovery enabled by default. (Set with 'M413 Sn' & M500)
+    #define PLR_ENABLED_DEFAULT       false // Power-Loss Recovery enabled by default. (Set with 'M413 Sn' & M500)
     //#define PLR_BED_THRESHOLD BED_MAXTEMP // (°C) Skip user confirmation at or above this bed temperature (0 to disable)
-    //#define BACKUP_POWER_SUPPLY           // Backup power / UPS to move the steppers on power loss
-    //#define POWER_LOSS_ZRAISE           2 // (mm) Z axis raise on resume (on power loss with UPS)
-    //#define POWER_LOSS_PIN             44 // Pin to detect power loss. Set to -1 to disable default pin on boards without module.
-    //#define POWER_LOSS_STATE         HIGH // State of pin indicating power loss
+
+    //#define POWER_LOSS_PIN             44 // Pin to detect power-loss. Set to -1 to disable default pin on boards without module, or comment to use board default.
+    //#define POWER_LOSS_STATE         HIGH // State of pin indicating power-loss
     //#define POWER_LOSS_PULLUP             // Set pullup / pulldown as appropriate for your sensor
     //#define POWER_LOSS_PULLDOWN
-    //#define POWER_LOSS_PURGE_LEN       20 // (mm) Length of filament to purge on resume
-    //#define POWER_LOSS_RETRACT_LEN     10 // (mm) Length of filament to retract on fail. Requires backup power.
+
+    //#define POWER_LOSS_ZRAISE        2    // (mm) Z axis raise on resume (on power-loss with UPS)
+    //#define POWER_LOSS_PURGE_LEN    20    // (mm) Length of filament to purge on resume
 
     // Without a POWER_LOSS_PIN the following option helps reduce wear on the SD card,
     // especially with "vase mode" printing. Set too high and vases cannot be continued.
-    #define POWER_LOSS_MIN_Z_CHANGE 0.05 // (mm) Minimum Z change before saving power-loss data
+    #define POWER_LOSS_MIN_Z_CHANGE    0.05 // (mm) Minimum Z change before saving power-loss data
+
+    //#define BACKUP_POWER_SUPPLY           // Backup power / UPS to move the steppers on power-loss
+    #if ENABLED(BACKUP_POWER_SUPPLY)
+      //#define POWER_LOSS_RETRACT_LEN   10 // (mm) Length of filament to retract on fail
+    #endif
 
     // Enable if Z homing is needed for proper recovery. 99.9% of the time this should be disabled!
     //#define POWER_LOSS_RECOVER_ZHOME
@@ -2222,13 +2229,20 @@
   //#define TFT_BTOKMENU_COLOR 0x145F // 00010 100010 11111 Cyan
 #endif
 
-//
-// LCD Backlight Timeout
-// Requires a display with a controllable backlight
-//
+/**
+ * Display Sleep
+ * Enable this option to save energy and prevent OLED pixel burn-in.
+ */
+//#define DISPLAY_SLEEP_MINUTES 2       // (minutes) Timeout before turning off the screen
+
+/**
+ * LCD Backlight Timeout
+ * Requires a display with a controllable backlight
+ */
 //#define LCD_BACKLIGHT_TIMEOUT_MINS 1  // (minutes) Timeout before turning off the backlight
+
 #if defined(DISPLAY_SLEEP_MINUTES) || defined(LCD_BACKLIGHT_TIMEOUT_MINS)
-  #define EDITABLE_DISPLAY_TIMEOUT      // Edit timeout with M255 S<minutes> and a menu item
+  #define EDITABLE_DISPLAY_TIMEOUT      // Edit sleep / backlight timeout with M255 S<minutes> and a menu item
 #endif
 
 //
@@ -2951,15 +2965,12 @@
  *    Some boards have simple jumper connections! See your board's documentation.
  *  - These drivers can also be used with Hardware Serial.
  *
- * The TMC26XStepper library is required for TMC26X stepper drivers.
- *   https://github.com/MarlinFirmware/TMC26XStepper
- *
  * The TMCStepper library is required for other TMC stepper drivers.
  *   https://github.com/teemuatlut/TMCStepper
  *
  * @section tmc/config
  */
-#if HAS_TRINAMIC_CONFIG || HAS_TMC26X
+#if HAS_TRINAMIC_CONFIG
 
   #define HOLD_MULTIPLIER    0.5  // Scales down the holding current from run current
 
@@ -2973,7 +2984,7 @@
     #define X_CURRENT       900        //* (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     16        // 0..256
-    #define X_RSENSE          0.11     // Multiplied x1000 for TMC26X
+    #define X_RSENSE          0.11
     #define X_CHAIN_POS      -1        // -1..0: Not chained. 1: MCU MOSI connected. 2: Next in chain, ...
     //#define X_INTERPOLATE  true      // Enable to override 'INTERPOLATE' for the X axis
     //#define X_HOLD_MULTIPLIER 0.5    // Enable to override 'HOLD_MULTIPLIER' for the X axis
@@ -3466,7 +3477,7 @@
    */
   #define TMC_ADV() {  }
 
-#endif // HAS_TRINAMIC_CONFIG || HAS_TMC26X
+#endif // HAS_TRINAMIC_CONFIG
 
 // @section i2cbus
 
@@ -4525,3 +4536,6 @@
 
 // Report uncleaned reset reason from register r2 instead of MCUSR. Supported by Optiboot on AVR.
 //#define OPTIBOOT_RESET_REASON
+
+// Shrink the build for smaller boards by sacrificing some serial feedback
+//#define MARLIN_SMALL_BUILD
