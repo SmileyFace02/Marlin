@@ -692,8 +692,8 @@
 #define CHAMBER_AUTO_FAN_PIN -1
 #define COOLER_AUTO_FAN_PIN -1
 
-#define EXTRUDER_AUTO_FAN_TEMPERATURE 60 //*
-#define EXTRUDER_AUTO_FAN_SPEED 150   //* 255 == full speed
+#define EXTRUDER_AUTO_FAN_TEMPERATURE 75  //*
+#define EXTRUDER_AUTO_FAN_SPEED 130       //* 255 == full speed
 #define CHAMBER_AUTO_FAN_TEMPERATURE 30
 #define CHAMBER_AUTO_FAN_SPEED 255
 #define COOLER_AUTO_FAN_TEMPERATURE 18
@@ -1117,21 +1117,21 @@
  * Fixed-time-based Motion Control -- EXPERIMENTAL
  * Enable/disable and set parameters with G-code M493.
  */
-//#define FT_MOTION
+#define FT_MOTION
 #if ENABLED(FT_MOTION)
   #define FTM_DEFAULT_MODE        ftMotionMode_DISABLED // Default mode of fixed time control. (Enums in ft_types.h)
   #define FTM_DEFAULT_DYNFREQ_MODE dynFreqMode_DISABLED // Default mode of dynamic frequency calculation. (Enums in ft_types.h)
-  #define FTM_SHAPING_DEFAULT_X_FREQ   37.0f      // (Hz) Default peak frequency used by input shapers
-  #define FTM_SHAPING_DEFAULT_Y_FREQ   37.0f      // (Hz) Default peak frequency used by input shapers
-  #define FTM_LINEAR_ADV_DEFAULT_ENA   false      // Default linear advance enable (true) or disable (false)
-  #define FTM_LINEAR_ADV_DEFAULT_K      0.0f      // Default linear advance gain
-  #define FTM_SHAPING_ZETA_X            0.1f      // Zeta used by input shapers for X axis
-  #define FTM_SHAPING_ZETA_Y            0.1f      // Zeta used by input shapers for Y axis
+  #define FTM_SHAPING_DEFAULT_X_FREQ   30.0f      //* (Hz) Default peak frequency used by input shapers
+  #define FTM_SHAPING_DEFAULT_Y_FREQ   25.0f      //* (Hz) Default peak frequency used by input shapers
+  #define FTM_LINEAR_ADV_DEFAULT_ENA    true      //* Default linear advance enable (true) or disable (false)
+  #define FTM_LINEAR_ADV_DEFAULT_K     0.05f      //* Default linear advance gain
+  #define FTM_SHAPING_ZETA_X           0.35f      //* Zeta used by input shapers for X axis
+  #define FTM_SHAPING_ZETA_Y           0.35f      //* Zeta used by input shapers for Y axis
 
   #define FTM_SHAPING_V_TOL_X           0.05f     // Vibration tolerance used by EI input shapers for X axis
   #define FTM_SHAPING_V_TOL_Y           0.05f     // Vibration tolerance used by EI input shapers for Y axis
 
-  //#define FT_MOTION_MENU                        // Provide a MarlinUI menu to set M493 parameters
+  #define FT_MOTION_MENU                          //* Provide a MarlinUI menu to set M493 parameters
 
   /**
    * Advanced configuration
@@ -1204,11 +1204,11 @@
 #define INPUT_SHAPING_Y //*
 #if ANY(INPUT_SHAPING_X, INPUT_SHAPING_Y)
   #if ENABLED(INPUT_SHAPING_X)
-    #define SHAPING_FREQ_X  26          //* (Hz) The default dominant resonant frequency on the X axis.
-    #define SHAPING_ZETA_X  0.5f        //* Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
+    #define SHAPING_FREQ_X  30          //* (Hz) The default dominant resonant frequency on the X axis.
+    #define SHAPING_ZETA_X  0.35f        //* Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
   #endif
   #if ENABLED(INPUT_SHAPING_Y)
-    #define SHAPING_FREQ_Y  26          //* (Hz) The default dominant resonant frequency on the Y axis.
+    #define SHAPING_FREQ_Y  25          //* (Hz) The default dominant resonant frequency on the Y axis.
     #define SHAPING_ZETA_Y  0.5f        //* Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
   #endif
   //#define SHAPING_MIN_FREQ  20        // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
@@ -2329,7 +2329,7 @@
   #if ENABLED(DISTINCT_E_FACTORS)
     #define ADVANCE_K { 0.04 }    // (mm) Compression length per 1mm/s extruder speed, per extruder
   #else
-    #define ADVANCE_K 0.04        // (mm) Compression length applying to all extruders
+    #define ADVANCE_K 0.05        // (mm) Compression length applying to all extruders
   #endif
   //#define ADVANCE_K_EXTRA       // Add a second linear advance constant, configurable with M900 L.
   //#define LA_DEBUG              // Print debug information to serial during operation. Disable for production use.
