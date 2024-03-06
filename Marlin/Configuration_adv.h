@@ -1003,13 +1003,13 @@
    *
    * Set the default state here, change with 'M401 S' or UI, use M500 to save, M502 to reset.
    */
-  #define BLTOUCH_HS_MODE true //*
+  #define BLTOUCH_HS_MODE true
 
   #ifdef BLTOUCH_HS_MODE
     // The probe Z offset (M851 Z) is the height at which the probe triggers.
     // This must be large enough to keep the probe pin off the bed and prevent
     // it from snagging on the bed clips.
-    #define BLTOUCH_HS_EXTRA_CLEARANCE    3 //* Extra Z Clearance
+    #define BLTOUCH_HS_EXTRA_CLEARANCE    2 //* Extra Z Clearance
   #endif
 
 #endif // BLTOUCH
@@ -1119,7 +1119,7 @@
  */
 #define FT_MOTION
 #if ENABLED(FT_MOTION)
-  #define FTM_DEFAULT_MODE        ftMotionMode_DISABLED // Default mode of fixed time control. (Enums in ft_types.h)
+  #define FTM_DEFAULT_MODE        ftMotionMode_MZV // Default mode of fixed time control. (Enums in ft_types.h)
   #define FTM_DEFAULT_DYNFREQ_MODE dynFreqMode_DISABLED // Default mode of dynamic frequency calculation. (Enums in ft_types.h)
   #define FTM_SHAPING_DEFAULT_X_FREQ   30.0f      //* (Hz) Default peak frequency used by input shapers
   #define FTM_SHAPING_DEFAULT_Y_FREQ   25.0f      //* (Hz) Default peak frequency used by input shapers
@@ -1171,7 +1171,7 @@
 
   #define FTM_MIN_SHAPE_FREQ           10         // Minimum shaping frequency
   #define FTM_RATIO (FTM_FS / FTM_MIN_SHAPE_FREQ) // Factor for use in FTM_ZMAX. DON'T CHANGE.
-  #define FTM_ZMAX (FTM_RATIO * 2)                // Maximum delays for shaping functions (even numbers only!)
+  #define FTM_ZMAX (FTM_RATIO)                    // Maximum delays for shaping functions (even numbers only!)
                                                   // Calculate as:
                                                   //   ZV       : FTM_RATIO / 2
                                                   //   ZVD, MZV : FTM_RATIO
@@ -1209,7 +1209,7 @@
   #endif
   #if ENABLED(INPUT_SHAPING_Y)
     #define SHAPING_FREQ_Y  25          //* (Hz) The default dominant resonant frequency on the Y axis.
-    #define SHAPING_ZETA_Y  0.5f        //* Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
+    #define SHAPING_ZETA_Y  0.35f        //* Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
   #endif
   //#define SHAPING_MIN_FREQ  20        // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
   //#define SHAPING_MAX_STEPRATE 10000  // By default the maximum total step rate of the shaped axes. Override to affect SRAM usage.
@@ -2333,7 +2333,6 @@
   #endif
   //#define ADVANCE_K_EXTRA       // Add a second linear advance constant, configurable with M900 L.
   //#define LA_DEBUG              // Print debug information to serial during operation. Disable for production use.
-  #define ALLOW_LOW_EJERK         //* Allow a DEFAULT_EJERK value of <10. Recommended for direct drive hotends.
   //#define EXPERIMENTAL_I2S_LA   // Allow I2S_STEPPER_STREAM to be used with LA. Performance degrades as the LA step rate reaches ~20kHz.
 #endif
 
