@@ -2141,11 +2141,11 @@
 
   #define MESH_EDIT_GFX_OVERLAY     //* Display a graphics overlay while editing the mesh
 
-  #define MESH_INSET 20             //* Set Mesh bounds as an inset region of the bed
+  #define MESH_INSET 25             //* Set Mesh bounds as an inset region of the bed
   #define GRID_MAX_POINTS_X 5       //* Don't use more than 15 points per axis, implementation limited.
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
-  #define UBL_HILBERT_CURVE         //* Use Hilbert distribution for less travel when probing multiple points
+  //#define UBL_HILBERT_CURVE       // Use Hilbert distribution for less travel when probing multiple points
 
   //#define UBL_TILT_ON_MESH_POINTS         // Use nearest mesh points with G29 J for better Z reference
   //#define UBL_TILT_ON_MESH_POINTS_3POINT  // Use nearest mesh points with G29 J0 (3-point)
